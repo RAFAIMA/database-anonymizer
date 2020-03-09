@@ -104,13 +104,5 @@ class TargetTable
         return $fields;
     }
 
-    /**
-     * Table must be truncated.
-     *
-     * @return bool
-     */
-    public function isTruncate(): bool
-    {
-        return $this->truncate;
-    }
+
 }
