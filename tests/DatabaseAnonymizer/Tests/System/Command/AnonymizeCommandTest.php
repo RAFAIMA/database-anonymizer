@@ -86,52 +86,5 @@ class AnonymizeCommandTest extends TestCase
         }
     }
 
-    public function testTruncate()
-    {
-        $generator = $this->createMock(GeneratorFactoryInterface::class);
-        $command = (new Application('Database anonymizer', '0.0.1'))
-            ->add(new AnonymizeCommand($generator));
 
-        $commandTester = new CommandTester($command);
-        $commandTester->setInputs(array('y'));
-        $commandTester->execute([
-            'command' => $command->getName(),
-            'config' => realpath(__DIR__.'/../../../../config/config_truncate.yaml'),
-            '--type' => $GLOBALS['db_type'],
-            '--host' => $GLOBALS['db_host'],
-            '--port' => $GLOBALS['db_port'],
-            '--database' => $GLOBALS['db_name'],
-            '--user' => $GLOBALS['db_username'],
-            '--password' => $GLOBALS['db_password'],
-        ]);
-
-        $connection = $this->getConnection();
-
-        $selectSQL = $connection->createQueryBuilder()
-            ->select('COUNT(*)')
-            ->from('users', 'u')
-            ->getSQL();
-        $selectStmt = $connection->prepare($selectSQL);
-        $selectStmt->execute();
-        $result = $selectStmt->fetch();
-        $this->assertEquals(0, current($result));
-
-        $selectSQL = $connection->createQueryBuilder()
-            ->select('COUNT(*)')
-            ->from('orders', 'o')
-            ->getSQL();
-        $selectStmt = $connection->prepare($selectSQL);
-        $selectStmt->execute();
-        $result = $selectStmt->fetch();
-        $this->assertEquals(0, current($result));
-
-        $selectSQL = $connection->createQueryBuilder()
-            ->select('COUNT(*)')
-            ->from('productivity', 'p')
-            ->getSQL();
-        $selectStmt = $connection->prepare($selectSQL);
-        $selectStmt->execute();
-        $result = $selectStmt->fetch();
-        $this->assertEquals(0, current($result));
-    }
 }
