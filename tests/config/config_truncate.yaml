@@ -1,8 +1,8 @@
 webnet_fr_database_anonymizer:
     tables:
         users:
-            truncate: true
+            truncate: false
         orders:
-            truncate: true
+            truncate: false
         productivity:
-            truncate: true
+            truncate: false
