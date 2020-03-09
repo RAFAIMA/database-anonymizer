@@ -23,55 +23,50 @@ class Anonymizer
      */
     public function anonymize(Connection $connection, array $targets)
     {
+        echo " taret1 : ".$targets."\n";
+
+
+
         foreach ($targets as $targetTable) {
-            if ($targetTable->isTruncate()) {
-                try {
-                    $connection->query('SET FOREIGN_KEY_CHECKS=0'); // for MySQL
-                } catch (DriverException $e) {}
+            echo " taret2 : \n";
 
-                $dbPlatform = $connection->getDatabasePlatform();
-                $truncateQuery = $dbPlatform->getTruncateTableSql($targetTable->getName(), true);
-                $connection->executeUpdate($truncateQuery);
+            $allFieldNames = $targetTable->getAllFieldNames();
+            $pk = $targetTable->getPrimaryKey();
+            $tttt = implode(',', $allFieldNames);
+            echo $tttt;
 
-                try {
-                    $connection->query('SET FOREIGN_KEY_CHECKS=1'); // for MySQL
-                } catch (DriverException $e) {}
-            } else {
-                $allFieldNames = $targetTable->getAllFieldNames();
-                $pk = $targetTable->getPrimaryKey();
+            // Select all rows form current table:
+            // SELECT <all target fields> FROM <target table>
+            $fetchRowsSQL = $connection->createQueryBuilder()
+                ->select(implode(',', $allFieldNames))
+                ->from($targetTable->getName())
+                ->getSQL()
+            ;
+            $fetchRowsStmt = $connection->prepare($fetchRowsSQL);
+            $fetchRowsStmt->execute();
 
-                // Select all rows form current table:
-                // SELECT <all target fields> FROM <target table>
-                $fetchRowsSQL = $connection->createQueryBuilder()
-                    ->select(implode(',', $allFieldNames))
-                    ->from($targetTable->getName())
-                    ->getSQL()
-                ;
-                $fetchRowsStmt = $connection->prepare($fetchRowsSQL);
-                $fetchRowsStmt->execute();
+            // Anonymize all rows in current target table.
+            while ($row = $fetchRowsStmt->fetch()) {
+                $values = [];
+                // Anonymize all target fields in current row.
+                foreach ($targetTable->getTargetFields() as $targetField) {
+                    $anonValue = $targetField->generate();
 
-                // Anonymize all rows in current target table.
-                while ($row = $fetchRowsStmt->fetch()) {
-                    $values = [];
-                    // Anonymize all target fields in current row.
-                    foreach ($targetTable->getTargetFields() as $targetField) {
-                        $anonValue = $targetField->generate();
-
-                        if (null !== $anonValue && !\is_string($anonValue)) {
-                            throw new InvalidAnonymousValueException('Generated value must be null or string');
-                        }
-
-                        // Set anonymized value.
-                        $values[$targetField->getName()] = $anonValue;
+                    if (null !== $anonValue && !\is_string($anonValue)) {
+                        throw new InvalidAnonymousValueException('Generated value must be null or string');
                     }
 
-                    $pkValues = [];
-                    foreach ($pk as $pkField) {
-                        $pkValues[$pkField] = $row[$pkField];
-                    }
-
-                    $connection->update($targetTable->getName(), $values, $pkValues);
+                    // Set anonymized value.
+                    $values[$targetField->getName()] = $anonValue;
                 }
+
+                $pkValues = [];
+                foreach ($pk as $pkField) {
+                    $pkValues[$pkField] = $row[$pkField];
+                }
+
+
+                $connection->update($targetTable->getName(), $values, $pkValues);
             }
         }
     }
