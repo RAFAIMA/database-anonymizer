@@ -8,6 +8,11 @@ curl https://packages.microsoft.com/config/ubuntu/14.04/prod.list | sudo tee /et
 sudo apt-get update
 ACCEPT_EULA=Y sudo apt-get install -qy msodbcsql17 mssql-tools unixodbc libssl1.0.0
 
+curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
+echo "deb [arch=amd64] https://packages.microsoft.com/ubuntu/18.04/prod bionic main" | sudo tee /etc/apt/sources.list.d/mssql-release.list
+sudo apt update
+sudo apt install msodbcsql17
+
 echo Setting up Microsoft SQL Server
 
 sudo docker pull microsoft/mssql-server-linux:2017-latest
