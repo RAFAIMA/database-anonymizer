@@ -25,10 +25,12 @@ class Anonymizer
         foreach ($targets as $targetTable) {
             if ($targetTable->isTruncate()) {
                 $dbPlatform = $connection->getDatabasePlatform();
-                $connection->query('SET FOREIGN_KEY_CHECKS=0');
+                if($dbPlatform->getName()=="mysql")
+                  $connection->query('SET FOREIGN_KEY_CHECKS=0');
                 $truncateQuery = $dbPlatform->getTruncateTableSql($targetTable->getName());
                 $connection->executeUpdate($truncateQuery);
-                $connection->query('SET FOREIGN_KEY_CHECKS=1');
+                if($dbPlatform->getName()=="mysql")
+                   $connection->query('SET FOREIGN_KEY_CHECKS=1');
             } else {
                 $allFieldNames = $targetTable->getAllFieldNames();
                 $pk = $targetTable->getPrimaryKey();
