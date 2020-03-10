@@ -27,10 +27,23 @@ class Anonymizer
                 $dbPlatform = $connection->getDatabasePlatform();
                 if($dbPlatform->getName()=="mysql")
                   $connection->query('SET FOREIGN_KEY_CHECKS=0');
+                else {
+                    $query = "ALTER TABLE". $targetTable->getName() . "DISABLE TRIGGER ALL;";
+                    $connection->query($query);
+
+                }
+
                 $truncateQuery = $dbPlatform->getTruncateTableSql($targetTable->getName());
                 $connection->executeUpdate($truncateQuery);
                 if($dbPlatform->getName()=="mysql")
                    $connection->query('SET FOREIGN_KEY_CHECKS=1');
+                else {
+                    $query = "ALTER TABLE". $targetTable->getName() . " ENABLE TRIGGER ALL";
+                    $connection->query($query);
+
+                }
+
+
             } else {
                 $allFieldNames = $targetTable->getAllFieldNames();
                 $pk = $targetTable->getPrimaryKey();
