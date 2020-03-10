@@ -28,7 +28,7 @@ class Anonymizer
                 if($dbPlatform->getName()=="mysql")
                   $connection->query('SET FOREIGN_KEY_CHECKS=0');
                 else {
-                    $query = "ALTER TABLE". $targetTable->getName() . "DISABLE TRIGGER ALL;";
+                    $query = "ALTER TABLE ". $targetTable->getName() . " DISABLE TRIGGER ALL;";
                     $connection->query($query);
 
                 }
@@ -38,7 +38,7 @@ class Anonymizer
                 if($dbPlatform->getName()=="mysql")
                    $connection->query('SET FOREIGN_KEY_CHECKS=1');
                 else {
-                    $query = "ALTER TABLE". $targetTable->getName() . " ENABLE TRIGGER ALL";
+                    $query = "ALTER TABLE ". $targetTable->getName() . " ENABLE TRIGGER ALL";
                     $connection->query($query);
 
                 }
