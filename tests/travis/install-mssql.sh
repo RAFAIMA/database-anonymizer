@@ -6,6 +6,7 @@ echo Installing drivers
 curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
 curl https://packages.microsoft.com/config/ubuntu/16.04/prod.list | sudo tee /etc/apt/sources.list.d/mssql.list
 sudo apt-get update
+sudo apt-get install  libssl1.0.0
 sudo apt-get install  msodbcsql17
 #ACCEPT_EULA=Y sudo apt-get install -qy msodbcsql17 mssql-tools unixodbc libssl1.0.0
 
