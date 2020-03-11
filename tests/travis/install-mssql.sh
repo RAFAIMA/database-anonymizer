@@ -4,8 +4,7 @@ set -ex
 
 echo Installing drivers
 sudo su
-curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
-
+curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
 #Download appropriate package for the OS version
 #Choose only ONE of the following, corresponding to your OS version
 
