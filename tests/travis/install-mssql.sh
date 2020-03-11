@@ -14,9 +14,9 @@ echo Setting up Microsoft SQL Server
 sudo docker pull microsoft/mssql-server-linux:2017-latest
 sudo docker run \
     -e 'ACCEPT_EULA=Y' \
-    -e 'SA_PASSWORD=Doctrine2018' \
+    -e 'SA_PASSWORD=Anonymizer2018' \
     -p 127.0.0.1:1433:1433 \
-    --name mssql \
+    --name db \
     -d \
     microsoft/mssql-server-linux:2017-latest
 
