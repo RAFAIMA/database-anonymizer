@@ -7,7 +7,7 @@ echo Installing driver dependencies
 curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
 echo "deb [arch=amd64] https://packages.microsoft.com/ubuntu/18.04/prod bionic main" | sudo tee /etc/apt/sources.list.d/mssql-release.list
 sudo apt update
-sudo sudo apt-get install -qy msodbcsql17
+sudo sudo apt-get install -qy msodbcsql
 #ACCEPT_EULA=Y sudo apt-get install -qy msodbcsql17 unixodbc unixodbc-dev libssl1.0.0
 
 echo Setting up Microsoft SQL Server
