@@ -4,9 +4,7 @@ set -ex
 
 echo Installing driver dependencies
 
-curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
-echo "deb [arch=amd64] https://packages.microsoft.com/ubuntu/18.04/prod bionic
-main" | sudo tee /etc/apt/sources.list.d/mssql-release.list
+curl https://packages.microsoft.com/keys/microsoft.asc | sudo add-apt-repository "$(wget -qO- https://packages.microsoft.com/config/ubuntu/16.04/mssql-server-2017.list)"
 sudo apt update
 sudo apt install msodbcsql17
 #ACCEPT_EULA=Y sudo apt-get install -qy msodbcsql17 unixodbc unixodbc-dev libssl1.0.0
