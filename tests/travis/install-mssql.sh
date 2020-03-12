@@ -8,16 +8,12 @@ sudo su
 curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
 curl https://packages.microsoft.com/config/ubuntu/16.04/prod.list | sudo tee /etc/apt/sources.list.d/msprod.list
 sudo apt-get update
-sudo ACCEPT_EULA=Y apt-get install msodbcsql17
-# optional: for bcp and sqlcmd
-sudo ACCEPT_EULA=Y apt-get install mssql-tools
-sudo apt-get install unixodbc-dev
+sudo apt-get install mssql-tools unixodbc-dev
+sudo apt-get update
+sudo apt-get install mssql-tools
 echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bash_profile
 echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bashrc
 source ~/.bashrc
-# optional: for unixODBC development headers
-
-
 
 #ACCEPT_EULA=Y sudo apt-get install -qy msodbcsql17 mssql-tools unixodbc libssl1.0.0
 
