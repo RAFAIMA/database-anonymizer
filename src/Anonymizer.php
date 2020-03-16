@@ -37,6 +37,8 @@ class Anonymizer
 
         $truncateQuery = "TRUNCATE TABLE  ". $targetTable->getName()." CASCADE ";
         $connection->executeUpdate($truncateQuery);
+        //delete from table_name
+        //dbcc checkident('table_name',reseed,0)
     }
 
             } else {
