@@ -42,14 +42,14 @@ jobs:
       addons:
         postgresql: "9.2"
 
-    - php: 7.1
-      env: DB=sqlsrv
-      sudo: required
-      services:
-        - docker
-      before_script:
-        #- bash ./tests/travis/install-mssql-sqlsrv.sh
-        - bash ./tests/travis/install-mssql.sh
+    #- php: 7.1
+    #  env: DB=sqlsrv
+    #  sudo: required
+    #  services:
+    #    - docker
+    #  before_script:
+    #    #- bash ./tests/travis/install-mssql-sqlsrv.sh
+    #    - bash ./tests/travis/install-mssql.sh
     - php: 7.2
       env: DB=sqlsrv
       sudo: required
@@ -58,3 +58,4 @@ jobs:
       before_script:
         - bash ./tests/travis/install-mssql-sqlsrv.sh
         - bash ./tests/travis/install-mssql.sh
+        - travis_wait 30 mvn install
