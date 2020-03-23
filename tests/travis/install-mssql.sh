@@ -2,26 +2,6 @@
 
 set -ex
 
-echo Installing drivers
-sudo su
-
-curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
-curl https://packages.microsoft.com/config/ubuntu/16.04/prod.list | sudo tee /etc/apt/sources.list.d/msprod.list
-sudo apt-get update
-sudo apt-get install mssql-tools unixodbc-dev
-sudo apt-get update
-sudo apt-get install mssql-tools
-echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bash_profile
-echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bashrc
-source ~/.bashrc
-
-#ACCEPT_EULA=Y sudo apt-get install -qy msodbcsql17 mssql-tools unixodbc libssl1.0.0
-
-#curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
-#echo "deb [arch=amd64] https://packages.microsoft.com/ubuntu/18.04/prod bionic main" | sudo tee /etc/apt/sources.list.d/mssql-release.list
-#sudo apt update
-#sudo apt install -qy msodbcsql17 mssql-tools unixodbc libssl1.0.0
-
 echo Setting up Microsoft SQL Server
 
 #sudo docker pull microsoft/mssql-server-linux:2017-latest
